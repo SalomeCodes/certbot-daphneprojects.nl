@@ -7,8 +7,8 @@ fi
 
 domains=(daphneprojects.nl www.daphneprojects.nl)
 rsa_key_size=4096
-data_path="./data/certbot"
-execution_path="./data/nginx"
+setup_path="./nginx"
+data_path="./certbot"
 email="salomecodes@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -35,10 +35,14 @@ if [ ! -e "$execution_path/docker-compose.yml" ] || [ ! -e "$execution_path/app.
   echo
 fi
 
+echo "### Create certification path and dummy files"
+path="$execution_path/$domains"
+mkdir -p "$execution_path/$domains"
+touch "$path/privkey.pem"
+touch "$path/fullchain.pem"
+
 echo "### Creating dummy certificate for $domains ..."
-cd "$execution_path"
-path="$domains"
-mkdir -p "$path"
+mkdir -p "$execution_path/$domains"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$path/privkey.pem' \
@@ -53,7 +57,7 @@ echo
 
 echo "### Deleting dummy certificate for $domains ..."
 docker-compose run --rm --entrypoint "\
-  rm -Rf /etc/letsencrypt/live/$domains && \
+  rm -Rf /nginx/$domains && \
   rm -Rf /etc/letsencrypt/archive/$domains && \
   rm -Rf /etc/letsencrypt/renewal/$domains.conf" certbot
 echo
