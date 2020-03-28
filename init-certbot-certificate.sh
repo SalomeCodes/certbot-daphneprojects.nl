@@ -36,9 +36,9 @@ if [ ! -e "$execution_path/docker-compose.yml" ] || [ ! -e "$execution_path/app.
 fi
 
 echo "### Creating dummy certificate for $domains ..."
-path="$execution_path/$domains"
-mkdir -p "$execution_path/$domains"
-cd "execution_path"
+cd "$execution_path"
+path="$domains"
+mkdir -p "$path"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$path/privkey.pem' \
