@@ -8,6 +8,7 @@ fi
 domains=(daphneprojects.nl www.daphneprojects.nl)
 rsa_key_size=4096
 data_path="./data/certbot"
+execution_path="./data/nginx"
 email="salomecodes@gmail.com" # Adding a valid address is strongly recommended
 staging=0 # Set to 1 if you're testing your setup to avoid hitting request limits
 
@@ -28,6 +29,7 @@ fi
 
 if [ ! -e "$execution_path/docker-compose.yml" ] || [ ! -e "$execution_path/app.conf" ]; then
   echo "### Downloading docker-compose and app.conf for nginx"
+  mkdir -p "$execution_path"
   curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/app.conf > "$execution_path/app.conf"
   curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/docker-compose.yml > "$execution_path/docker-compose.yml"
   echo
