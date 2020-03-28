@@ -18,12 +18,18 @@ if [ -d "$data_path" ]; then
   fi
 fi
 
-
 if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/ssl-dhparams.pem" ]; then
   echo "### Downloading recommended TLS parameters ..."
   mkdir -p "$data_path/conf"
   curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/options-ssl-nginx.conf > "$data_path/conf/options-ssl-nginx.conf"
   curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/ssl-dhparams.pem > "$data_path/conf/ssl-dhparams.pem"
+  echo
+fi
+
+if [ ! -e "$execution_path/docker-compose.yml" ] || [ ! -e "$execution_path/app.conf" ]; then
+  echo "### Downloading docker-compose and app.conf for nginx"
+  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/app.conf > "$execution_path/app.conf"
+  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/docker-compose.yml > "$execution_path/docker-compose.yml"
   echo
 fi
 
