@@ -27,22 +27,22 @@ if [ ! -e "$data_path/conf/options-ssl-nginx.conf" ] || [ ! -e "$data_path/conf/
   echo
 fi
 
-if [ ! -e "$execution_path/docker-compose.yml" ] || [ ! -e "$execution_path/app.conf" ]; then
+if [ ! -e "$setup_path/docker-compose.yml" ] || [ ! -e "$setup_path/app.conf" ]; then
   echo "### Downloading docker-compose and app.conf for nginx"
-  mkdir -p "$execution_path"
-  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/app.conf > "$execution_path/app.conf"
-  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/docker-compose.yml > "$execution_path/docker-compose.yml"
+  mkdir -p "$setup_path"
+  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/app.conf > "$setup_path/app.conf"
+  curl -s https://raw.githubusercontent.com/SalomeCodes/certbot-daphneprojects.nl/master/nginx/docker-compose.yml > "$setup_path/docker-compose.yml"
   echo
 fi
 
 echo "### Create certification path and dummy files"
-path="$execution_path/$domains"
-mkdir -p "$execution_path/$domains"
+path="$setup_path/$domains"
+mkdir -p "$setup_path/$domains"
 touch "$path/privkey.pem"
 touch "$path/fullchain.pem"
 
 echo "### Creating dummy certificate for $domains ..."
-mkdir -p "$execution_path/$domains"
+mkdir -p "$setup_path/$domains"
 docker-compose run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$path/privkey.pem' \
